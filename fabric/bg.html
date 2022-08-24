@@ -1,123 +1,133 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Fabric 背景生成工具</title>
-    <script src="https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js"></script>
-    <style>
-      .container {
-        margin: 20px 0;
-        position: relative;
-      }
 
-      #title {
-        color: #fff;
-        font-size: 32px;
-        position: absolute;
-        bottom: 40px;
-        left: 20px;
-      }
-      #desc {
-        color: #fff;
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-      }
-      input[type="text"] {
-        width: 60px;
-      }
-    </style>
-  </head>
-  <body>
-    <div>
-      <input id="canvas-width" type="text" value="720" />
-      <input id="canvas-height" type="text" value="1080" />
-      <input id="canvas-bg" type="text" value="#000" />
-      <button onclick="generateCanvas()">生成画板</button>
+<head>
+  <meta charset="utf-8" />
+  <title>Fabric 背景生成工具</title>
+  <script src="https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js"></script>
+  <style>
+    .container {
+      margin: 20px 0;
+      position: relative;
+    }
 
-      <input id="selectImg" type="file" />
-      <button onclick="downloadCanvas('canvas1')">下载</button>
-      <button onclick="copy()">复制</button>
+    .canvas-container {
+      transform: scale(0.6);
+      transform-origin: 0px 0px;
+    }
 
-      <div class="container">
-      </div>
+    #title {
+      color: #fff;
+      font-size: 32px;
+      position: absolute;
+      bottom: 40px;
+      left: 20px;
+    }
+
+    #desc {
+      color: #fff;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+
+    input[type="text"] {
+      width: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <input id="canvas-width" type="text" value="720" />
+    <input id="canvas-height" type="text" value="1080" />
+    <input id="canvas-bg" type="text" value="#000" />
+    <button onclick="generateCanvas()">生成画板</button>
+
+    <input id="selectImg" type="file" />
+    <button onclick="downloadCanvas('canvas1')">下载</button>
+    <button onclick="copy()">复制</button>
+
+    <div class="container">
     </div>
+  </div>
 
-    <script>
-      let canvas1;
-      let canvasBg;
-      
-      function generateCanvas() {
-        const width = document.querySelector("#canvas-width").value;
-        const height = document.querySelector("#canvas-height").value;
-        canvasBg = document.querySelector("#canvas-bg").value;
+  <script>
+    let canvas1;
+    let canvasBg;
 
-        if(canvas1){
-          canvas1.clear();
-          document.querySelector('.container').innerHTML='';
-        }
-        
-        const canvas = document.createElement("canvas");
-        canvas.id = "canvas1";
-        canvas.width = width;
-        canvas.height = height;
+    function generateCanvas() {
+      const width = document.querySelector("#canvas-width").value;
+      const height = document.querySelector("#canvas-height").value;
+      canvasBg = document.querySelector("#canvas-bg").value;
 
-        document.querySelector('.container').appendChild(canvas);
-
-        canvas1 = new fabric.Canvas("canvas1", {
-          backgroundColor: canvasBg,
-          selection: false,
-          selectable: false,
-        });
-      }
-
-      function download(objUrl, name) {
-        console.log(objUrl);
-        const a = document.createElement("a");
-        a.href = objUrl;
-        a.download = name;
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-
-      function downloadCanvas(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        const url = canvas.toDataURL("image/jpg");
-        download(url, "Canvas.jpg");
-      }
-
-      function copy() {
-        const canvas = document.getElementById("canvas1");
-        canvas.toBlob(function (blob) {
-          const item = new ClipboardItem({ "image/png": blob });
-          navigator.clipboard.write([item]);
-          alert("Copied! paste it on paint");
-        });
-      }
-
-      function selectImage (event) {
+      if (canvas1) {
         canvas1.clear();
-        canvas1.setBackgroundColor(canvasBg);
+        document.querySelector('.container').innerHTML = '';
+      }
 
-        var file = this.files[0];
-        var fileURL = URL.createObjectURL(file);
-        const image = new Image();
-        image.src = fileURL;
-        image.onload = function () {
-          const fabImage = new fabric.Image(image, { left: 0, top: 0 });
+      const canvas = document.createElement("canvas");
+      canvas.id = "canvas1";
+      canvas.width = width;
+      canvas.height = height;
 
-          fabImage.lockRotation = true;
+      document.querySelector('.container').appendChild(canvas);
 
-          canvas1.add(fabImage);
-        };
+      canvas1 = new fabric.Canvas("canvas1", {
+        backgroundColor: canvasBg,
+        selection: false,
+        selectable: false,
+      });
+    }
+
+    function download(objUrl, name) {
+      console.log(objUrl);
+      const a = document.createElement("a");
+      a.href = objUrl;
+      a.download = name;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function downloadCanvas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      const url = canvas.toDataURL("image/jpg");
+      download(url, "Canvas.jpg");
+    }
+
+    function copy() {
+      const canvas = document.getElementById("canvas1");
+      canvas.toBlob(function (blob) {
+        const item = new ClipboardItem({ "image/png": blob });
+        navigator.clipboard.write([item]);
+        alert("Copied! paste it on paint");
+      });
+    }
+
+    function selectImage(event) {
+      canvas1.clear();
+      canvas1.setBackgroundColor(canvasBg);
+
+      var file = this.files[0];
+      var fileURL = URL.createObjectURL(file);
+      const image = new Image();
+      image.src = fileURL;
+      image.onload = function () {
+        const fabImage = new fabric.Image(image, { left: 0, top: 0 });
+
+        fabImage.lockRotation = true;
+
+        canvas1.add(fabImage);
       };
+    };
 
-      const selectImg = document.querySelector("#selectImg");
-      selectImg.addEventListener("change", selectImage, false);
+    const selectImg = document.querySelector("#selectImg");
+    selectImg.addEventListener("change", selectImage, false);
 
-      generateCanvas();
-    </script>
-  </body>
+    generateCanvas();
+  </script>
+</body>
+
 </html>
