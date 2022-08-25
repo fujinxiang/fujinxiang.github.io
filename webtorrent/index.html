@@ -44,13 +44,15 @@
     });
 
     function download(torrentId) {
-      log("开始解析磁力链接" + torrentId);
-      log("连接远程 tracker 可能会失败，请稍等或重试");
+      log(torrentId);
+      log("开始解析磁力链接，请稍等……");
       const client = new WebTorrent();
 
       client.on("error", function (err) {
         console.error("ERROR: " + err.message);
       });
+
+      log('本地 peerId: ' + client.peerId);
 
       client.add(torrentId, onTorrent);
     }
@@ -74,7 +76,13 @@
       // Print out progress every 5 seconds
       const interval = setInterval(function () {
         log("Progress: " + (torrent.progress * 100).toFixed(1) + "%");
-      }, 5000);
+        log('numPeers: ' + torrent.wires.length);
+
+        torrent.wires.forEach(wire => {
+          log(`已从节点 ${wire.peerId} 共下载数据 ${(wire.downloaded / (1024 * 1024)).toFixed(2)}MB ===，下载速度：${(wire.downloadSpeed() / (1024 * 1024)).toFixed(2)}MB/s`);
+        });
+
+      }, 1000);
 
       torrent.on("done", function () {
         log("Progress: 100%");
