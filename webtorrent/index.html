@@ -58,22 +58,22 @@
     }
 
     function onTorrent(torrent) {
-      log("Got torrent metadata!");
-      log(
-        "Torrent info hash: " +
-        torrent.infoHash +
-        " " +
-        '<a href="' +
-        torrent.magnetURI +
-        '" target="_blank">[Magnet URI]</a> ' +
-        '<a href="' +
-        torrent.torrentFileBlobURL +
-        '" target="_blank" download="' +
-        torrent.name +
-        '.torrent">[Download .torrent]</a>'
-      );
+      log("解析成功！正在下载");
+      // log(
+      //   "Torrent info hash: " +
+      //   torrent.infoHash +
+      //   " " +
+      //   '<a href="' +
+      //   torrent.magnetURI +
+      //   '" target="_blank">[Magnet URI]</a> ' +
+      //   '<a href="' +
+      //   torrent.torrentFileBlobURL +
+      //   '" target="_blank" download="' +
+      //   torrent.name +
+      //   '.torrent">[Download .torrent]</a>'
+      // );
 
-      // Print out progress every 5 seconds
+      // 每秒更新一次下载进度
       const interval = setInterval(function () {
         log("Progress: " + (torrent.progress * 100).toFixed(1) + "%");
         log('numPeers: ' + torrent.wires.length);
@@ -92,9 +92,9 @@
       // Render all files into to the page
       torrent.files.forEach(function (file) {
         file.appendTo(".log");
-        log(
-          '(Blob URLs only work if the file is loaded from a server. "http//localhost" works. "file://" does not.)'
-        );
+        // log(
+        //   '(Blob URLs only work if the file is loaded from a server. "http//localhost" works. "file://" does not.)'
+        // );
         file.getBlobURL(function (err, url) {
           if (err) return log(err.message);
           log("File done.");
