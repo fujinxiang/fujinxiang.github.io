@@ -1,62 +1,43 @@
 const coverList = [
   {
-    title: "封面1",
-    width: 1200,
-    height: 800,
-    bgColor: "#999",
-    imgs: [
-      {
-        src: "https://store-g1.seewo.com/seewolive/images/easiteach/default-user.svg",
-        options: {
-          left: 50,
-          top: 140,
-          opacity: 0.5,
-        },
-      },
-    ],
-    texts: [
-      {
-        text: "Title Text",
-        options: {
-          width: 1200,
-          fontSize: 100,
-          fontFamily: "微软雅黑",
-          fill: "white",
-          backgroundColor: "transparent",
-          left: 0,
-          top: 160,
-          textAlign: "center",
-        },
-      },
-    ],
-  },
-  {
-    title: "封面2",
+    title: "FFMPEG",
     width: 900,
     height: 500,
-    bgColor: "#399",
+    bgColor: "#fff",
     imgs: [
       {
-        src: "https://store-g1.seewo.com/seewolive/images/easiteach/default-user.svg",
+        src: "https://cdn.jsdelivr.net/gh/fujinxiang/statics/images/ffmpeg.png",
         options: {
           left: 50,
-          top: 140,
-          opacity: 0.5,
+          top: 138,
+          opacity: 1,
         },
       },
     ],
     texts: [
       {
-        text: "Title Text",
+        text: "FFMPEG",
         options: {
-          width: 1200,
-          fontSize: 100,
-          fontFamily: "微软雅黑",
-          fill: "white",
-          backgroundColor: "transparent",
-          left: 0,
-          top: 160,
-          textAlign: "center",
+          width: 600,
+          fontSize: 120,
+          fontFamily: "Arail Black",
+          fontWeight: "900",
+          fill: "black",
+          left: 260,
+          top: 180,
+        },
+      },
+      {
+        text: "几何裁剪",
+        options: {
+          width: 600,
+          fontSize: 90,
+          fontFamily: "楷体",
+          fontWeight: "900",
+          fill: "orange",
+          left: 400,
+          top: 300,
+          textAlign: "end",
         },
       },
     ],
@@ -85,8 +66,6 @@ function generateCanvas(index) {
 
   // 创建 Canvas 元素
   canvas = new fabric.Canvas("canvas1", {
-    width: selectedCover.width,
-    height: selectedCover.height,
     backgroundColor: selectedCover.bgColor,
   });
 
@@ -109,46 +88,6 @@ function generateCanvas(index) {
     const fabricText = new fabric.Textbox(textConfig.text, textConfig.options);
     fabricTexts.push(fabricText);
     canvas.add(fabricText);
-  });
-
-  // 添加拖拽和缩放功能
-  fabricImgs.concat(fabricTexts).forEach((obj) => {
-    obj.hasControls = obj.hasBorders = true;
-    obj.lockRotation = true;
-    obj.lockScalingFlip = true;
-    obj.lockUniScaling = true;
-    obj.lockSkewingX = true;
-    obj.lockSkewingY = true;
-    obj.lockScalingX = true;
-    obj.lockScalingY = true;
-    obj.lockMovementX = false;
-    obj.lockMovementY = false;
-    obj.selectable = true;
-    obj.evented = true;
-    obj.setControlsVisibility({
-      mt: false,
-      mb: false,
-      ml: false,
-      mr: false,
-    });
-    obj.set({
-      borderColor: "#000",
-      cornerColor: "#000",
-      cornerSize: 10,
-      transparentCorners: false,
-    });
-    obj.on("selected", function () {
-      obj.set({
-        borderColor: "#00F",
-        cornerColor: "#00F",
-      });
-    });
-    obj.on("deselected", function () {
-      obj.set({
-        borderColor: "#000",
-        cornerColor: "#000",
-      });
-    });
   });
 
   // 监听选择图片事件
