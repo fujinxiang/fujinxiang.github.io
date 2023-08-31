@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Fabric 背景生成工具</title>
+    <style>
+        .tab {
+            display: inline-block;
+            padding: 4px;
+            background-color: lightgray;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: gray;
+            color: white;
+        }
+        #vue-container{
+            margin: 6px 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js"></script>
+    <script src="https://qn-store-pub-tx.seewo.com/statics/js/vue/3.2.45/vue.global.min.js"></script>
+    <script src="./cover.js"></script>
+</head>
+
+<body>
+    <div>
+        <input id="selectImg" type="file" />
+        <button onclick="downloadCanvas('canvas1')">下载</button>
+        <button onclick="copy()">复制</button>
+        <div id="vue-container">
+            <span v-for="(item, index) in items" :key="index" :class="{ 'tab': true, 'active': index === activeTabIndex }" @click="setActiveTab(index)">{{ item.title }}</span>
+        </div>
+        <div class="container">
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    items: coverList,
+                    activeTabIndex: 0,
+                };
+            },
+            methods: {
+                setActiveTab(index) {
+                    this.activeTabIndex = index;
+                    generateCanvas(index);
+                },
+            },
+        }).mount("#vue-container");
+
+        generateCanvas(0);
+    </script>
+</body>
+
+</html>

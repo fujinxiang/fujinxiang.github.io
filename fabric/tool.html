@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Fabric图片生成工具</title>
+    <script src="https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <button onclick="downloadCanvas('canvas1')">下载</button>
+        <button onclick="copy()">复制</button>
+        <canvas id="canvas1" width="1200" height="800"></canvas>
+    </div>
+
+    <script>
+        // 使用 StaticCanvas 就不会覆盖一层操作区，不可选中、编辑
+        const canvas1 = new fabric.Canvas("canvas1", {
+            backgroundColor: "#2A8C51",
+            selection: false,
+            selectable: false,
+        });
+        const text = new fabric.Textbox("Title Text", {
+            width: 1200,
+            fontSize: 100,
+            fontFamily: "微软雅黑",
+            fill: "white",
+            backgroundColor: "transparent",
+            left: 0,
+            top: 160,
+            textAlign: "center",
+        });
+
+        const text2 = new fabric.Textbox("Second Text", {
+            width: 1200,
+            fontSize: 64,
+            fontFamily: "微软雅黑",
+            fill: "#FFEE00",
+            backgroundColor: "transparent",
+            left: 0,
+            top: 360,
+            textAlign: "center",
+        });
+
+        text.hasControls = text.hasBorders = false;
+
+        canvas1.add(text, text2);
+
+        fabric.Image.fromURL(
+            "https://cstore-prot-pub-test.seewo.com/live-platform/91ebab8f77c94a8da2af7d038a503af8",
+            function (image) {
+                image.set({
+                    left: 50,
+                    top: 140,
+                    opacity: 0.8,
+                }).scale(0.5);// scale 是个方法
+
+                // image.scaleToHeight(500);
+                // image.scaleToWidth(500);
+
+                canvas1.add(image);
+            }, { crossOrigin: 'Anonymous' }  // 这样设置也可以
+        );
+
+        const image = new Image();
+        // 设定跨域支持，必须在设置 src 之前
+        image.setAttribute("crossOrigin", "anonymous");
+        image.src =
+            "https://store-g1.seewo.com/seewolive/images/easiteach/default-user.svg";
+
+        // 图片加载成功后才添加到 canvas 中
+        image.onload = function () {
+            const fabImage = new fabric.Image(image, { left: 20, top: 20 });
+            canvas1.add(fabImage);
+        };
+
+        function download(objUrl, name) {
+            console.log(objUrl);
+            const a = document.createElement("a");
+            a.href = objUrl;
+            a.download = name;
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function downloadCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const url = canvas.toDataURL("image/jpg");
+            download(url, "Canvas.jpg");
+        }
+
+        function copy() {
+            const canvas = document.getElementById("canvas1");
+            canvas.toBlob(function (blob) {
+                const item = new ClipboardItem({ "image/png": blob });
+                navigator.clipboard.write([item]);
+                alert("Copied! paste it on paint");
+            });
+        }
+    </script>
+</body>
+
+</html>
