@@ -23,7 +23,7 @@ const coverList = [
           fontFamily: "Arail Black",
           fontWeight: "900",
           fill: "black",
-          left: 260,
+          left: 280,
           top: 180,
         },
       },
@@ -69,12 +69,19 @@ function generateCanvas(index) {
     backgroundColor: selectedCover.bgColor,
   });
 
+  canvas.on('object:moving', function(e) {
+    const element = e.target;
+    console.log(element.left, element.top);
+    app.message= `${element.name} left:${element.left},top:${element.top}`;
+  });
+
   // 添加预置图片
-  selectedCover.imgs.forEach((imgConfig) => {
+  selectedCover.imgs.forEach((imgConfig, index) => {
     const img = new Image();
     // 设定跨域支持，必须在设置 src 之前
     img.setAttribute("crossOrigin", "anonymous");
     img.src = imgConfig.src;
+    imgConfig.options.name = `img${index}`;
 
     img.onload = function () {
       const fabricImg = new fabric.Image(img, imgConfig.options);
@@ -84,7 +91,9 @@ function generateCanvas(index) {
   });
 
   // 添加预置文本
-  selectedCover.texts.forEach((textConfig) => {
+  selectedCover.texts.forEach((textConfig, index) => {
+    textConfig.options.name = `text${index}`;
+
     const fabricText = new fabric.Textbox(textConfig.text, textConfig.options);
     fabricTexts.push(fabricText);
     canvas.add(fabricText);
@@ -132,6 +141,6 @@ function copy() {
   canvas1.toBlob(function (blob) {
     const item = new ClipboardItem({ "image/png": blob });
     navigator.clipboard.write([item]);
-    alert("Copied! Paste it on paint");
+    app.message='复制成功!';
   });
 }

@@ -7,6 +7,7 @@
     <style>
         .tab {
             display: inline-block;
+            margin: 4px 0;
             padding: 4px;
             background-color: lightgray;
             cursor: pointer;
@@ -22,6 +23,11 @@
         #canvas1{
             border: 1px solid #ccc;
         }
+        .tip{
+            display: inline-block;
+            margin: 0 4px;
+            color: #5a5;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/fabric@4.2.0/dist/fabric.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
@@ -29,11 +35,12 @@
 </head>
 
 <body>
-    <div>
+    <div id="vue-container">
         <input id="selectImg" type="file" />
         <button onclick="downloadCanvas('canvas1')">下载</button>
         <button onclick="copy()">复制</button>
-        <div id="vue-container">
+        <span class="tip">{{message}}</span>
+        <div>
             <span v-for="(item, index) in items" :key="index" :class="{ 'tab': true, 'active': index === activeTabIndex }" @click="setActiveTab(index)">{{ item.title }}</span>
         </div>
         <div class="container">
@@ -45,6 +52,7 @@
             data() {
                 return {
                     items: coverList,
+                    message:'',
                     activeTabIndex: 0,
                 };
             },
