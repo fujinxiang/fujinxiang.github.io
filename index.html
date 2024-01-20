@@ -13,25 +13,22 @@
         width: 150px;
         height: 60px;
         line-height: 60px;
+        color: #333;
         border: 1px solid #ccc;
         margin: 10px;
         text-align: center;
+        text-decoration: none;
       }
 
       .item-card:hover {
         border: 1px solid #aaa;
-      }
-
-      .link {
-        text-decoration: none;
-        color: #333;
       }
     </style>
   </head>
 
   <body>
     <div id="container">
-      <div v-for="item in items" class="item-card"><a class="link" :href="item.path" target="_blank">{{item.name}}</a></div>
+      <a v-for="item in items" class="item-card" :href="item.path" target="_blank">{{item.name}}</a>
     </div>
     <script>
       const app = Vue.createApp({

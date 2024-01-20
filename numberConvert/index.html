@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>进制转换</title>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-gap: 10px;
+        margin: 20px;
+        font-size: 24px;
+      }
+      input{
+        font-size: 24px;
+      }
+    </style>
+    <script>
+      function convertBinary() {
+        var binary = parseNumberArray(document.getElementById('binary').value, 2);
+        var decimal = binary.join(' ');
+        var hexadecimal = binary
+          .map((num) => num.toString(16).padStart(2, '0'))
+          .map((x) => '0x' + x.toUpperCase())
+          .join(', ');
+        document.getElementById('decimal').value = decimal;
+        document.getElementById('hexadecimal').value = hexadecimal;
+        document.getElementById('string').value = hexToStr(hexadecimal);
+      }
+
+      function convertDecimal() {
+        var decimal = parseNumberArray(document.getElementById('decimal').value, 10);
+        var hexadecimal = decimal
+          .map((num) => num.toString(16).padStart(2, '0'))
+          .map((x) => '0x' + x.toUpperCase())
+          .join(', ');
+        var binary = decimal.map((num) => num.toString(2)).join(' ');
+        document.getElementById('binary').value = binary;
+        document.getElementById('hexadecimal').value = hexadecimal;
+        document.getElementById('string').value = hexToStr(hexadecimal);
+      }
+
+      function convertHexadecimal() {
+        var hexadecimal = parseNumberArray(document.getElementById('hexadecimal').value, 16);
+        var decimal = hexadecimal.map((num) => parseInt(num, 10));
+        var binary = decimal.map((num) => num.toString(2)).join(' ');
+        document.getElementById('decimal').value = decimal.join(' ');
+        document.getElementById('binary').value = binary;
+        document.getElementById('string').value = hexToStr(document.getElementById('hexadecimal').value);
+      }
+
+      function convertStringToHex() {
+        var str = document.getElementById('string').value;
+        document.getElementById('hexadecimal').value = strToHex(str);
+        convertHexadecimal();
+      }
+
+      function parseNumberArray(input, base) {
+        const numArray = input
+          .replace(/[, ]/g, ',')
+          .split(',')
+          .filter((num) => num !== '');
+
+        // 将数组中的每个元素解析为数字
+        const parsedArray = numArray.map((num) => parseInt(num, base));
+
+        // 返回解析后的数组
+        return parsedArray;
+      }
+
+      function hexToStr(hex) {
+        // 将十六进制字符串按 ", " 分割成数组
+        const hexArray = hex.split(', ');
+
+        // 遍历数组，将每个十六进制数值转为字符
+        const str = hexArray.map((hexValue) => String.fromCharCode(parseInt(hexValue, 16))).join('');
+
+        // 返回结果字符串
+        return str;
+      }
+
+      function strToHex(str) {
+        const hex = str
+          .split('')
+          .map((char) => '0x' + char.charCodeAt(0).toString(16).padStart(2, '0').toUpperCase())
+          .join(', ');
+        return hex;
+      }
+    </script>
+  </head>
+  <body>
+    <h2>进制转换</h2>
+    <div id="container">
+      <label>二进制：</label>
+      <input type="text" id="binary" oninput="convertBinary()" />
+      <label>十进制：</label>
+      <input type="text" id="decimal" oninput="convertDecimal()" />
+      <label>十六进制：</label>
+      <input type="text" id="hexadecimal" oninput="convertHexadecimal()" />
+      <label>字符串：</label>
+      <input type="text" id="string" oninput="convertStringToHex()" />
+    </div>
+  </body>
+</html>

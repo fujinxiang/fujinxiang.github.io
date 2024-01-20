@@ -8,7 +8,11 @@ window.tools = [
         path: 'https://i.fujinxiang.cn/'
     },
     {
-        name: 'WebTorrent',
-        path: './webtorrent/'
+        name: '进制转换',
+        path: '/numberConvert/'
+    },
+    {
+        name: 'emoji',
+        path: '/emoji/'
     },
 ]
