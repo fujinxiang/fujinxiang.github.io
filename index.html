@@ -1,17 +1,48 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工具集</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.min.js"></script>
+    <script src="./data.js"></script>
+    <style>
+      .item-card {
+        display: inline-block;
+        width: 150px;
+        height: 60px;
+        line-height: 60px;
+        border: 1px solid #ccc;
+        margin: 10px;
+        text-align: center;
+      }
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuma</title>
-</head>
+      .item-card:hover {
+        border: 1px solid #aaa;
+      }
 
-<body>
-    <h1>Hello</h1>
-    <a href='/fabric' target="_blank">Fabric 背景生成</a>
-    <a href='/webtorrent' target="_blank">WebTorrent</a>
-</body>
+      .link {
+        text-decoration: none;
+        color: #333;
+      }
+    </style>
+  </head>
 
+  <body>
+    <div id="container">
+      <div v-for="item in items" class="item-card"><a class="link" :href="item.path" target="_blank">{{item.name}}</a></div>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            items: [],
+          };
+        },
+      }).mount('#container');
+
+      app.items = window.tools;
+    </script>
+  </body>
 </html>
