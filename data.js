@@ -12,6 +12,10 @@ window.tools = [
         path: '/numberConvert/'
     },
     {
+        name: '计算MD5',
+        path: '/md5/'
+    },
+    {
         name: 'emoji',
         path: '/emoji/'
     },
